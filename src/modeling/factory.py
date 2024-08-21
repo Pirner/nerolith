@@ -11,7 +11,7 @@ class ModelFactory(object):
         :param config:
         :return:
         """
-        if config.architecture.lower():
+        if config.architecture.lower() == 'fpn':
             model = ModelFactory.build_fpn(config)
         else:
             raise ValueError('no valid architecture for model provided.')

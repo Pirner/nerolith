@@ -10,4 +10,5 @@ class VisionIO:
         :return:
         """
         im = cv2.imread(im_path)
+        im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
         return im
