@@ -1,3 +1,5 @@
+import albumentations as A
+from albumentations.pytorch import ToTensorV2
 import torch
 from torchvision.transforms import v2
 
@@ -11,11 +13,11 @@ class BinarySegmentationTransform:
         :param im_w: image width
         :return:
         """
-        t_train = v2.Compose([
-            v2.Resize(size=(im_h, im_w)),
-            v2.RandomHorizontalFlip(p=0.5),
-            v2.ToDtype(torch.float32),
-            v2.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        t_train = A.Compose([
+            A.Resize(width=im_w, height=im_h, always_apply=True),
+            A.HorizontalFlip(p=0.1),
+            A.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+            ToTensorV2()
         ])
 
         return t_train
@@ -28,10 +30,11 @@ class BinarySegmentationTransform:
         :param im_w: image width
         :return:
         """
-        t_val = v2.Compose([
-            v2.Resize(size=(im_h, im_w)),
-            v2.ToDtype(torch.float32),
-            v2.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        t_val = A.Compose([
+            A.Resize(width=im_w, height=im_h, always_apply=True),
+            A.HorizontalFlip(p=0.1),
+            A.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+            ToTensorV2()
         ])
 
         return t_val
