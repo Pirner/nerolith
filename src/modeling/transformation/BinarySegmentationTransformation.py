@@ -1,7 +1,5 @@
 import albumentations as A
 from albumentations.pytorch import ToTensorV2
-import torch
-from torchvision.transforms import v2
 
 
 class BinarySegmentationTransform:
