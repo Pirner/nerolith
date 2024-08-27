@@ -43,4 +43,7 @@ class BinarySegmentationDataset(Dataset):
             im_out = Image.fromarray(im)
             mask_out = mask
 
+        mask_out = mask_out.permute(2, 0, 1)
+        mask_out /= 255.
+
         return im_out, mask_out

@@ -2,6 +2,8 @@ import pytorch_lightning as pl
 import torch
 from torchmetrics import JaccardIndex
 
+from src.modeling.losses.DiceLoss import DiceLoss
+
 
 class BinarySegmentationTrainer(pl.LightningModule):
     """
@@ -13,6 +15,7 @@ class BinarySegmentationTrainer(pl.LightningModule):
         super().__init__()
         self.model = model
         self.jaccard = JaccardIndex(task='binary')
+        self.dice_loss = DiceLoss()
 
     def forward(self, sample):
         x = sample
@@ -22,17 +25,21 @@ class BinarySegmentationTrainer(pl.LightningModule):
     def training_step(self, batch, batch_idx):
         sample, y = batch
         predictions = self(sample)
-        loss = self.jaccard(predictions, y)
+        loss = self.dice_loss(predictions, y)
+        jaccard_score = self.jaccard(predictions, y)
 
         self.log('train_loss', loss.item(), on_epoch=True, prog_bar=True)
+        self.log('train_jaccard', jaccard_score.item(), on_epoch=True, prog_bar=True)
         return loss
 
     def validation_step(self, batch, batch_idx):
         sample, y = batch
         predictions = self(sample)
-        loss = self.jaccard(predictions, y)
+        loss = self.dice_loss(predictions, y)
+        jaccard_score = self.jaccard(predictions, y)
 
         self.log('val_loss', loss.item(), on_epoch=True, prog_bar=True)
+        self.log('val_jaccard', jaccard_score.item(), on_epoch=True, prog_bar=True)
 
     def configure_optimizers(self):
         optimizer = torch.optim.Adam(self.model.parameters(), lr=2e-5)
