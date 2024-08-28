@@ -65,7 +65,7 @@ def main():
     trainer = BinarySegmentationTrainer(model=model)
     pl_module_trainer = pl.Trainer(
         accelerator='gpu',
-        max_epochs=15,
+        max_epochs=100,
         callbacks=create_callbacks(experiment_path),
         logger=False,
         enable_checkpointing=False,
