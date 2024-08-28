@@ -68,6 +68,7 @@ def main():
         max_epochs=15,
         callbacks=create_callbacks(experiment_path),
         logger=False,
+        enable_checkpointing=False,
     )
 
     pl_module_trainer.fit(trainer, train_loader, val_loader)
