@@ -6,7 +6,7 @@ class VisionRendering:
     """
     Central class for vision rendering of any processes within the website
     """
-    def __init__(self, alpha=1.0, beta=0.5):
+    def __init__(self, alpha=1.0, beta=0.8):
         """
         init the class
         :param alpha: when putting add weighted on it, first image intensity
