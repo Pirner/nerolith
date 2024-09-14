@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% from 'bootstrap5/form.html' import render_form %}
+
+{% block title %}
+Detect Litter
+{% endblock %}
+
+
+{% block content %}
+<div class="p-5 text-center bg-body-tertiary">
+  <h1 class="mb-3">Upload an Image for detection</h1>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
+      <p class="lead">
+        This form let's you select and upload an image for inference purposes to test the AI behind it.
+      </p>
+
+      {{ render_form(form) }}
+
+      <p class="pt-5"><strong>{{ message }}</strong></p>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
