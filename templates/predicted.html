@@ -1,10 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% from 'bootstrap5/form.html' import render_form %}
 
-</body>
-</html>
+{% block title %}
+Detect Litter
+{% endblock %}
+
+
+{% block content %}
+<div class="p-5 text-center bg-body-tertiary">
+  <h1 class="mb-3">Upload an Image for detection</h1>
+</div>
+
+<!-- Hero -->
+<div class="p-4 text-center shadow-4 rounded-3" style="background-color: hsl(0, 0%, 94%);">
+  <h2>Prediction Result</h2>
+  <p>
+      Result of the litter detection.
+  </p>
+
+  <div>
+<!--    <img id="picture" src="data:image/jpeg;base64,{{ img_data }}">-->
+    <img src="data:image/jpeg;base64,{{ img_data }}" class="img-fluid" alt="Responsive image">
+  </div>
+
+  <hr class="my-4" />
+  <p>
+    It uses utility classes for typography and spacing to space content out within the
+    larger container.
+  </p>
+  <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary">
+    Learn more
+  </button>
+</div>
+<!-- Hero -->
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
+      <p class="lead">
+        Upload another image.
+      </p>
+
+      {{ render_form(form) }}
+
+      <p class="pt-5"><strong>{{ message }}</strong></p>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

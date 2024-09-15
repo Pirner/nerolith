@@ -1,12 +1,14 @@
 import os
 import io
 import json
+import base64
 
 import cv2
 from flask import Flask, render_template, request
 from flask_bootstrap import Bootstrap5
 from flask_wtf import CSRFProtect
 import numpy as np
+from PIL import Image
 
 from src.config.DTO import ModelConfig
 from src.forms.PredictionForm import NameForm
@@ -28,7 +30,7 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/create/', methods=('GET', 'POST'))
+@app.route('/detect/', methods=('GET', 'POST'))
 def create():
     form = NameForm()
     if form.validate_on_submit():
@@ -54,8 +56,21 @@ def create():
         overlay = renderer.render_binary_mask(im=im, mask=segmentation_map)
         cv2.imwrite('tmp.png', im)
         cv2.imwrite('overlay.png', overlay)
+
+        # pil_im = Image.open("test.jpg")
+        pil_im = Image.fromarray(cv2.cvtColor(overlay, cv2.COLOR_BGR2RGB))
+        data = io.BytesIO()
+
+        # First save image as in-memory.
+        pil_im.save(data, "JPEG")
+
+        # Then encode the saved image file.
+        encoded_img_data = base64.b64encode(data.getvalue())
         # end inference
-    return render_template('create.html', form=form)
+
+        return render_template('predicted.html', form=form, img_data=encoded_img_data.decode('utf-8'))
+    else:
+        return render_template('prediction_request.html', form=form)
 
 
 if __name__ == "__main__":
